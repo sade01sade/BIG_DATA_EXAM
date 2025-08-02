@@ -101,7 +101,7 @@ plt.show()
 
 ---
 
-### ▶️ Step 4: Split into Train and Test Sets
+### ▶️ Step 5: Split into Train and Test Sets
 
 ```python
 from sklearn.model_selection import train_test_split
@@ -116,7 +116,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 ---
 
-### ▶️ Step 5: Apply SMOTE to Balance the Training Set
+### ▶️ Step 6: Apply SMOTE to Balance the Training Set
 
 ```python
 !pip install imbalanced-learn
@@ -131,7 +131,7 @@ print(y_train_resampled.value_counts())
 
 ---
 
-### ▶️ Step 6: Export for Power BI
+### ▶️ Step 7: Export for Power BI
 
 ```python
 # Combine features and label
@@ -195,11 +195,15 @@ Includes:
 
 This project demonstrates how real-world financial fraud can be analyzed using open data, Python, and business intelligence tools. The combination of SMOTE balancing, feature scaling, and visual storytelling enables users to better understand and detect fraudulent behavior.
 
-```
-
 ---
 
-### 🔁 Next Steps (Optional)
+### Power BI dashboard screenshot
+
+<img width="581" height="331" alt="Screenshot 2025-08-02 154212" src="https://github.com/user-attachments/assets/f508b13e-d3f7-42a0-9c22-b962795b8f45" />
+
+
+### 🔁 Next Steps (Optional) You can find the cleaned data, the PowerPoint and the pbiviz file in the link Below 👇:
+
 - Add screenshots (e.g. `images/dashboard_screenshot.png`)
 - Link to PowerPoint or PDF of your final presentation
 - Include a short video demo (if required)
