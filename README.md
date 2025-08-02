@@ -1,15 +1,32 @@
 # BIG_DATA_EXAM
+
+## 👤 Author
+
+* **Name**: SADE GEORGE SADE
+* **ID**: 26915
+* **Institution**: AUCA
+* **Module**: INSY8314 — Big Data Analytics
+* **Instructor**: Mr. BYIRINGIRO Eric
+
+---
+
+## ✅ Updated `README.md` with Data Cleaning Code Included
+
+````markdown
 # 💳 Credit Card Fraud Detection — Big Data Analytics Capstone Project
 
-This project investigates credit card fraud using customer transaction behavior data. The goal is to explore patterns in fraudulent vs. legitimate transactions, build machine learning models, and present interactive visual analytics using Power BI.
+This project aims to detect fraudulent credit card transactions using machine learning and big data visualization techniques. The pipeline includes data exploration, preprocessing (including SMOTE for class imbalance), and an interactive Power BI dashboard.
 
 ---
 
 ## 📁 Dataset
 
-- **Source**: [ULB Credit Card Fraud Detection Dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) *(accessed externally, not via Kaggle)*
-- **Rows**: 284,807 transactions
-- **Features**: 30 anonymized input features (V1–V28), `Time`, `Amount`, and `Class` (fraud = 1, legit = 0)
+- **Source**: ULB Credit Card Fraud Detection Dataset  
+- **Rows**: 284,807 transactions  
+- **Features**: 
+  - `Time`, `Amount` (continuous)
+  - `V1` to `V28` (anonymized via PCA)
+  - `Class` → Target: 0 = Legit, 1 = Fraud
 
 ---
 
@@ -17,80 +34,152 @@ This project investigates credit card fraud using customer transaction behavior 
 
 | Tool           | Purpose                              |
 |----------------|--------------------------------------|
-| Google Colab   | Python-based data cleaning, SMOTE    |
-| pandas, seaborn, matplotlib | Data manipulation and visualization |
-| Power BI       | Interactive data dashboards          |
-| GitHub         | Project repository                   |
+| Python (Google Colab) | Data cleaning, balancing (SMOTE) |
+| Power BI       | Interactive dashboard & analytics    |
+| GitHub         | Project version control              |
+| pandas, matplotlib, seaborn, scikit-learn | Python data stack |
+
+---
+
+## 🧼 Data Cleaning & Preprocessing (Python Code)
+
+### ▶️ Step 1: Load and Preview the Data
+
+```python
+import pandas as pd
+
+df = pd.read_csv("creditcard.csv")
+print(df.shape)
+print(df.head())
+````
+
+---
+
+### ▶️ Step 2: Check for Missing Values
+
+```python
+print(df.isnull().sum())
+```
+
+---
+
+### ▶️ Step 3: Normalize `Amount` and `Time`
+
+```python
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+df['norm_amount'] = scaler.fit_transform(df[['Amount']])
+df['norm_time'] = scaler.fit_transform(df[['Time']])
+
+# Drop original columns
+df = df.drop(['Amount', 'Time'], axis=1)
+```
+
+---
+
+### ▶️ Step 4: Split into Train and Test Sets
+
+```python
+from sklearn.model_selection import train_test_split
+
+X = df.drop('Class', axis=1)
+y = df['Class']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42
+)
+```
+
+---
+
+### ▶️ Step 5: Apply SMOTE to Balance the Training Set
+
+```python
+!pip install imbalanced-learn
+
+from imblearn.over_sampling import SMOTE
+
+smote = SMOTE(random_state=42)
+X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
+
+print(y_train_resampled.value_counts())
+```
+
+---
+
+### ▶️ Step 6: Export for Power BI
+
+```python
+# Combine features and label
+train_df = pd.concat([pd.DataFrame(X_train_resampled, columns=X.columns),
+                      pd.Series(y_train_resampled, name='Class')], axis=1)
+
+test_df = pd.concat([X_test.reset_index(drop=True), y_test.reset_index(drop=True)], axis=1)
+
+# Add 'Set' column for dashboard filtering
+train_df['Set'] = 'Train'
+test_df['Set'] = 'Test'
+
+# Combine into one CSV
+combined_df = pd.concat([train_df, test_df])
+combined_df.to_csv('combined_data.csv', index=False)
+```
 
 ---
 
 ## 📊 Power BI Dashboard
 
-The dashboard includes:
+Includes:
 
-- **KPI Cards**:
-  - 🧮 Total Transactions
-  - 🔴 Total Fraud Transactions
-  - ⚠️ Fraud Rate (%)
-- **Bar Chart**:
-  - Class distribution by Train/Test set
-- **Box/Violin Plot** *(imported image)*:
-  - `norm_amount` distribution by fraud status
-- **Scatter Plot**:
-  - Feature interactions (e.g., `V1` vs `V2`) colored by class
-- **Histograms**:
-  - Distribution of `V1`, `V14`, etc.
-- **Slicers**:
-  - Filter by Class (Fraud / Legit)
-  - Filter by Set (Train / Test)
-  - Filter by transaction amount range
+* ✅ KPI Cards: Total Transactions, Fraud Count, Fraud Rate
+* 📊 Bar Chart: Class count by Train/Test
+* 📈 Violin/Box Plot: norm\_amount by Class (exported from Python)
+* 📉 Histograms: Feature distributions (e.g., V1, V14)
+* 🎯 Scatter Plots: V1 vs V2, sized by norm\_amount
+* 🎚️ Slicers: ClassLabel, Set, norm\_amount (range slider)
 
 ---
 
-## 🧼 Data Preprocessing (Python)
+## 🧠 Key Insights
 
-1. Loaded and explored data using pandas
-2. Normalized `Amount` and `Time` using `StandardScaler`
-3. Applied **SMOTE** to balance fraud and legit cases in training data
-4. Split data into training and testing sets (80/20)
-
-Cleaned datasets (`train_resampled.csv`, `test_set.csv`, `combined_data.csv`) were exported and used in Power BI.
+* Class imbalance is extreme: <0.2% fraud
+* Fraudulent transactions show distinct patterns in V1, V14, V17
+* SMOTE helps balance data and train effective models
+* Power BI slicers allow interactive fraud exploration
 
 ---
 
-## 🧠 Insights & Observations
+## 📝 Repository Structure
 
-- Fraud transactions have distinct feature patterns in `V1`, `V14`, and `Amount`
-- Legit transactions dominate the dataset (~99.8%)
-- Using SMOTE significantly improves model training
-- Visual filters make it easier to isolate and study fraud patterns
-
----
-
-## 📝 How to Use
-
-1. Clone or download this repo
-2. Open `combined_data.csv` in Power BI
-3. Use the slicers and visuals to explore fraud insights
-4. (Optional) Run preprocessing code in the Jupyter/Colab notebook
-
----
-
-## 📸 Sample Dashboard Screenshot
-
-![Dashboard](images/dashboard_screenshot.png)  
-*(Replace with your actual screenshot path)*
+```
+📦 credit-card-fraud-project
+├── data/
+│   └── combined_data.csv
+├── notebook/
+│   └── fraud_cleaning.ipynb
+├── visuals/
+│   └── violin_plot.png
+├── dashboard/
+│   └── fraud_dashboard.pbix
+└── README.md
+```
 
 ---
 
-## 👨‍💻 Author
 
-- **Name**: SADE GEORGE SADE  
-- **Institution**: AUCA (Adventist University of Central Africa)  
-- **Course**: INSY8314 – Web Design / Big Data Analytics  
-- **Supervisor**: Mr. BYIRINGIRO Eric
+## 🏁 Conclusion
+
+This project demonstrates how real-world financial fraud can be analyzed using open data, Python, and business intelligence tools. The combination of SMOTE balancing, feature scaling, and visual storytelling enables users to better understand and detect fraudulent behavior.
+
+```
 
 ---
 
-## 📂 Repository Structure
+### 🔁 Next Steps (Optional)
+- Add screenshots (e.g. `images/dashboard_screenshot.png`)
+- Link to PowerPoint or PDF of your final presentation
+- Include a short video demo (if required)
 
+Would you like a version of this `README.md` saved in a downloadable `.md` file or help creating a matching `fraud_cleaning.ipynb` notebook to include in your repo?
+```
