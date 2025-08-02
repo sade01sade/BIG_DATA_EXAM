@@ -10,9 +10,6 @@
 
 ---
 
-## ✅ Updated `README.md` with Data Cleaning Code Included
-
-````markdown
 # 💳 Credit Card Fraud Detection — Big Data Analytics Capstone Project
 
 This project aims to detect fraudulent credit card transactions using machine learning and big data visualization techniques. The pipeline includes data exploration, preprocessing (including SMOTE for class imbalance), and an interactive Power BI dashboard.
@@ -75,6 +72,32 @@ df['norm_time'] = scaler.fit_transform(df[['Time']])
 # Drop original columns
 df = df.drop(['Amount', 'Time'], axis=1)
 ```
+---
+### ▶️ Step 4: Visual checks 
+
+```python
+  import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Plot Amount vs Class
+plt.figure(figsize=(6,4))
+sns.boxplot(x='Class', y='Amount', data=df)
+plt.title('Transaction Amount by Class')
+plt.show()
+
+# Plot Time distribution
+plt.figure(figsize=(6,4))
+sns.histplot(df['Time'], bins=50, kde=True)
+plt.title('Transaction Time Distribution')
+plt.show()
+```
+## Screenshots of visual checks
+
+<img width="415" height="287" alt="Screenshot 2025-08-02 153619" src="https://github.com/user-attachments/assets/db0f1e7a-1810-453f-bb68-d8602dd0cb77" />
+
+<img width="418" height="293" alt="Screenshot 2025-08-02 153658" src="https://github.com/user-attachments/assets/063ace02-095e-4ef6-a54e-c56622ccff4b" />
+
+
 
 ---
 
