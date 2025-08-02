@@ -202,11 +202,9 @@ This project demonstrates how real-world financial fraud can be analyzed using o
 <img width="581" height="331" alt="Screenshot 2025-08-02 154212" src="https://github.com/user-attachments/assets/f508b13e-d3f7-42a0-9c22-b962795b8f45" />
 
 
-### 🔁 Next Steps (Optional) You can find the cleaned data, the PowerPoint and the pbiviz file in the link Below 👇:
-
-- Add screenshots (e.g. `images/dashboard_screenshot.png`)
-- Link to PowerPoint or PDF of your final presentation
-- Include a short video demo (if required)
-
-Would you like a version of this `README.md` saved in a downloadable `.md` file or help creating a matching `fraud_cleaning.ipynb` notebook to include in your repo?
+### 🔁 You can find the cleaned data, the PowerPoint and the pbiviz file in the link Below 👇:
 ```
+  https://drive.google.com/drive/folders/1iIEg00OkaLQPOSzN51An1GrDUT9jh9Xq?usp=drive_link
+```
+
+### THANK YOU 
