@@ -207,4 +207,9 @@ This project demonstrates how real-world financial fraud can be analyzed using o
   https://drive.google.com/drive/folders/1iIEg00OkaLQPOSzN51An1GrDUT9jh9Xq?usp=drive_link
 ```
 
+### 🔁 You can find the Dataset in the link Below 👇:
+
+```
+https://huggingface.co/datasets/JEFFREY-VERDIERE/Creditcard/blob/feac26da102fcef433202e29a528e3bfb6a62a04/creditcard.csv
+```
 ### THANK YOU 
